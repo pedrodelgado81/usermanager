@@ -1,0 +1,35 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Dru-id User Manager</title>
+	<f:facet name="first">
+		<script src="https://kit.fontawesome.com/8840e2056b.js"
+			crossorigin="anonymous"></script>
+		<h:outputStylesheet name="custom.css" library="css" />
+	</f:facet>
+</h:head>
+
+<body>
+	<div id="encabezado">
+		<p:outputPanel styleClass="barra-header">
+			<div class="ui-g">
+				<div class="ui-g-8" style="text-align: left;">
+					<img src="https://dru-id.com/wp-content/uploads/2018/09/Logo_RGB.svg" width="200px" alt="Identity &amp; Smart Activation as a Service" id="logo"/>
+				</div>
+				<div class="ui-g-4">					
+				</div>
+			</div>
+		</p:outputPanel>
+
+	</div>
+	<p:outputPanel styleClass="contenido-web">
+		<ui:insert name="contenido"></ui:insert>
+	</p:outputPanel>
+</body>
+</html>

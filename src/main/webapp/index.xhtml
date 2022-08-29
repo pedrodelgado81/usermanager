@@ -1,0 +1,52 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+
+<body>
+	<ui:composition template="/resources/layout/templatePublico.xhtml">
+		<ui:define name="contenido">
+			<main>
+			<div class="ui-g" id="introDiv">
+				<div class="ui-g-12">
+					<h1>#{messages['index.titulo']}</h1>
+				</div>
+			</div>
+			<div class="ui-g">
+				<!-- prependId es necesario para que JSF no componga los ID ya que es necesario que tengan los nombres puestos para que springboot los lea por defecto -->
+				<div class="ui-g-12">
+					<h:form prependId="false">
+						<div class="panel-centrado">
+							<h2>#{messages['index.login']}</h2>
+							<div>
+								<p:outputLabel value="#{messages['login.error']}"
+									styleClass="error" rendered="#{param.error !=null}" />
+							</div>
+							<div class="elemento-panel">
+								<p:inputText id="username"
+									placeholder="nombreUsuario@dru-id.com" style="width:100%;" maxlength="100">
+									<p:keyFilter for="username" mask="email"></p:keyFilter>
+								</p:inputText>
+								
+							</div>
+							<div class="elemento-panel">
+								<p:password id="password" placeholder="password" maxlength="100"
+									style="width:100%;" />
+							</div>
+							<div class="elemento-panel" style="text-align:center;">
+								<p:commandButton value="Login" ajax="false" style="width:50%;"
+									icon="fas fa-sign-in-alt" />
+							</div>
+						</div>
+					</h:form>
+				</div>
+			</div>
+			</main>
+		</ui:define>
+	</ui:composition>
+</body>
+</html>
