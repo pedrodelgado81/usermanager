@@ -45,6 +45,15 @@
 					</h:form>
 				</div>
 			</div>
+			<div>
+			
+				<p:dataTable var="_user" value="#{userManagerBackbean.usersList}">
+					<p:column>
+						#{_user.nombre}
+					</p:column>
+				
+				</p:dataTable>
+			</div>
 			</main>
 		</ui:define>
 	</ui:composition>

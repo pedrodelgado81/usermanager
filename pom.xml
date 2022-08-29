@@ -47,6 +47,14 @@
 			<version>8.0</version>
 		</dependency>
 		<!-- Fin primefaces -->
+		
+		<!-- Gestion de sesiones en base de datos -->
+		<dependency>
+			<groupId>org.springframework.session</groupId>
+			<artifactId>spring-session-jdbc</artifactId>
+		</dependency>
+		
+		<!-- Fin gestion de sesiones en bbdd -->
 
 		<!-- Dependencias Spring Initializr -->
 		<dependency>
@@ -54,10 +62,10 @@
 			<artifactId>spring-boot-starter-data-jpa</artifactId>
 		</dependency>
 
-<!-- 		<dependency> -->
-<!-- 			<groupId>org.springframework.boot</groupId> -->
-<!-- 			<artifactId>spring-boot-starter-security</artifactId> -->
-<!-- 		</dependency> -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 
 		<dependency>
 			<groupId>org.springframework.boot</groupId>

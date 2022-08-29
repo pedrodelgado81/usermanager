@@ -7,6 +7,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.web.servlet.ServletRegistrationBean;
 import org.springframework.context.annotation.Bean;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.context.ServletContextAware;
 
 @SpringBootApplication
@@ -24,6 +25,11 @@ public class UsermanagerApplication  {
 		ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(servlet, "*.xhtml");
 		return servletRegistrationBean;
 	}
+	
+	 @Bean
+     public BCryptPasswordEncoder bCryptPasswordEncoder() {
+         return new BCryptPasswordEncoder();
+     }
 	
 
 //	@Override
