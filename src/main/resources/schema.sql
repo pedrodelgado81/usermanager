@@ -13,15 +13,17 @@ CREATE TABLE usermanager.usuario (
   PASSWORD VARCHAR(100) NOT NULL,
   AVATAR VARCHAR(1000),
   ROL Varchar(10) NOT NULL DEFAULT 'USR',
-  FECHA_ALTA TIMESTAMP NOT NULL DEFAULT now()  
+  FECHA_NACIMIENTO DATE NOT NULL,
+  FECHA_ALTA TIMESTAMP NOT NULL DEFAULT now()
+  FECHA_BAJA TIMESTAMP -- No borramos los usuarios de BBDD cuando se dan de baja ya que se tendrian que preservar (facturas, documentos, etc)
 );
 
 -- Password 1234 para todos los usuarios
-INSERT into usermanager.usuario(id,nombre,apellidos,email,password,avatar,rol) values(0,'admin','admin sistemas','admin@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','ROLE_ADMIN');
-INSERT into usermanager.usuario(id,nombre,apellidos,email,password,avatar) values(1,'usuario','usuario Prueba','usuario@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar');
-INSERT into usermanager.usuario(id,nombre,apellidos,email,password,avatar) values(2,'Manuel','Castillo Perez','manuel@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar');
-INSERT into usermanager.usuario(id,nombre,apellidos,email,password,avatar) values(3,'Carmen','Romero Martinez','carmen@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar');
-INSERT into usermanager.usuario(id,nombre,apellidos,email,password,avatar) values(4,'Marta','Casas Boija','marta@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar');
+INSERT into usermanager.usuario(id,nombre,apellidos,email,password,avatar,rol,FECHA_NACIMIENTO) values(0,'admin','admin sistemas','admin@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','ROLE_ADMIN','17-09-1975');
+INSERT into usermanager.usuario(id,nombre,apellidos,email,password,avatar,FECHA_NACIMIENTO) values(1,'usuario','usuario Prueba','usuario@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','20-11-1987');
+INSERT into usermanager.usuario(id,nombre,apellidos,email,password,avatar,FECHA_NACIMIENTO) values(2,'Manuel','Castillo Perez','manuel@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','07-06-1992');
+INSERT into usermanager.usuario(id,nombre,apellidos,email,password,avatar,FECHA_NACIMIENTO) values(3,'Carmen','Romero Martinez','carmen@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','09-01-2002');
+INSERT into usermanager.usuario(id,nombre,apellidos,email,password,avatar,FECHA_NACIMIENTO) values(4,'Marta','Casas Boija','marta@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','13-04-1997');
 
 
 -- Tablas para la gestion de las sesiones 
