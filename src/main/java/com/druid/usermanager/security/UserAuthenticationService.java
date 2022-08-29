@@ -21,24 +21,22 @@ public class UserAuthenticationService implements UserDetailsService {
 
 	@Override
 	public UserDetails loadUserByUsername(String username) {
-		List<com.druid.usermanager.entities.User> usuarios = userService.findUserByEmail(username);
+		List<com.druid.usermanager.entities.User> userList = userService.findUserByEmail(username);
 
-		if (usuarios.isEmpty() || usuarios.size() > 1) {
+		if (userList.isEmpty() || userList.size() > 1) {
 			throw new UsernameNotFoundException("No se ha encontrado al usuario");
 		} else {
 
 			// Crea un constructor de usuario para "usermane"
-			UserBuilder userBuilder = User.withUsername(username);
+			UserBuilder userBuilder = User.withUsername(username);			
 			// Configura el usuario como activo
 			userBuilder.disabled(false);
 			// Encapsula el password (este valor es obligatorio)
-			userBuilder.password(usuarios.get(0).getPassword());
+			userBuilder.password(userList.get(0).getPassword());
 			// Modo de autorizacion (este valor es obligatorio)
-			if (username.contains("admin")) {
-				userBuilder.authorities(new SimpleGrantedAuthority("ROLE_ADMIN"));
-			} else {
-				userBuilder.authorities(new SimpleGrantedAuthority("ROLE_USER"));
-			}
+			
+			userBuilder.authorities(new SimpleGrantedAuthority(userList.get(0).getRol()));
+			
 			// Generamos el usuario
 			return userBuilder.build();
 		}

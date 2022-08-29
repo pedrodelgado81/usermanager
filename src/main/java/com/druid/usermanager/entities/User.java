@@ -17,7 +17,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 @Table(name = "USUARIO", schema = "usermanager",catalog = "usermanagerbbdd")
 @SequenceGenerator(schema = "usermanager",sequenceName = "usuario_seq",name = "generador_usuario_seq",initialValue = 5 ,allocationSize = 1)
-public class User implements java.io.Serializable {
+public class User implements java.io.Serializable{
 
 	private static final long serialVersionUID = -6078938284979656361L;
 	

@@ -20,7 +20,7 @@ CREATE TABLE USERMANAGER.usuario (
   FECHA_BAJA TIMESTAMP 
 );
 
--- Password 1234 para todos los usuarios
+-- Password 12345 para todos los usuarios
 INSERT into USERMANAGER.usuario(id,nombre,apellidos,email,password,avatar,rol,FECHA_NACIMIENTO) values(0,'admin','admin sistemas','admin@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','ROLE_ADMIN','1975-09-17');
 INSERT into USERMANAGER.usuario(id,nombre,apellidos,email,password,avatar,FECHA_NACIMIENTO) values(1,'usuario','usuario Prueba','usuario@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','1987-11-20');
 INSERT into USERMANAGER.usuario(id,nombre,apellidos,email,password,avatar,FECHA_NACIMIENTO) values(2,'Manuel','Castillo Perez','manuel@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','1992-06-07');

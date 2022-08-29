@@ -61,3 +61,33 @@ main{
 	box-shadow: none;
 }
 
+.box {
+   display: flex;
+   align-items:center;
+}
+
+.title{
+	margin-left: 20px;
+    font-size: 1.7em;
+    color: #008fbc;
+    font-weight: bold;
+    border-bottom: 3px solid#008fbc;
+    font-style: italic;
+}
+
+.logout-link {
+	background-color: #5a5a5a;
+	border: 1px solid #5a5a5a;
+	color: white;
+	padding: 8px;
+	padding-top: 16px;
+	border-radius: 15px;
+}
+
+.logout-link:hover {
+	background-color: white;
+	color: #008fbc;
+	border: 1px solid #008fbc;
+
+}
+

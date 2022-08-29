@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html lang="es" xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Dru-id User Manager</title>
+	<f:facet name="first">
+		<script src="https://kit.fontawesome.com/8840e2056b.js"
+			crossorigin="anonymous"></script>
+		<h:outputStylesheet name="custom.css" library="css" />
+	</f:facet>
+</h:head>
+
+<body>
+	<div id="encabezado">
+		<p:outputPanel styleClass="barra-header">
+			
+			<div class="ui-g">
+				<div class="ui-g-8 box" style="text-align: left;">
+						<img src="https://dru-id.com/wp-content/uploads/2018/09/Logo_RGB.svg" width="200px" alt="Identity &amp; Smart Activation as a Service" id="logo"/>
+						<div class="title"> User Manager</div>
+						<p:outputPanel rendered="#{p:ifGranted('ROLE_ADMIN')}">
+							<div style="margin-left:15px;color:red;"> (Admin)</div>
+						</p:outputPanel>
+				</div>
+				<div class="ui-g-4">
+					<div class="div-usuario-logueado" style="display: inline;margin-right:15px;"><i class="fas fa-user"></i> #{userIdentity.authenticatedUser.username}</div>
+					<h:form rendered="#{p:ifAnyGranted(['ROLE_USER','ROLE_ADMIN'])}"
+						style="float:right;">
+						
+						<div style="display: inline">
+							<p:commandLink title="Logout" action="#{userIdentity.logout()}"
+								styleClass="logout-link">
+								<i class="fas fa-2x fa-power-off"></i>
+							</p:commandLink>
+						</div>
+					</h:form>
+
+					<h:form style="float:right;margin-right:15px;">
+						<p:selectOneMenu value="#{userIdentity.selectedLocale}" var="_locale">
+								<f:selectItems value="#{userIdentity.locales}" />
+								
+								<p:column>
+									<p:outputPanel rendered="#{_locale == 'es'}"> <h:graphicImage name="img/espana.png" width="16"/> Español</p:outputPanel>
+									<p:outputPanel rendered="#{_locale == 'en'}"> <h:graphicImage name="img/eng.png"  width="16"/> Inglés</p:outputPanel>
+								</p:column>
+								
+							<p:ajax event="change"
+								listener="#{userIdentity.changeLocale()}"
+								update="@(.barra-header) @(.contenido-web)"></p:ajax>
+						</p:selectOneMenu>
+					</h:form>
+				</div>
+			</div>
+		</p:outputPanel>
+
+	</div>
+	<p:outputPanel styleClass="contenido-web">
+		<ui:insert name="contenido"></ui:insert>
+	</p:outputPanel>
+</body>
+</html>
