@@ -17,7 +17,7 @@
 				</div>
 			</div>
 			<div class="ui-g">
-				<!-- prependId es necesario para que JSF no componga los ID ya que es necesario que tengan los nombres puestos para que springboot los lea por defecto -->
+				<!-- prependId es necesario para que JSF no componga los ID. Como se usa el mecanismo de login de Spring es necesario que los input tengan los nombres por defecto de Spring -->
 				<div class="ui-g-12">
 					<h:form prependId="false">
 						<div class="panel-centrado">
@@ -44,16 +44,7 @@
 						</div>
 					</h:form>
 				</div>
-			</div>
-			<div>
-			
-				<p:dataTable var="_user" value="#{userManagerBackbean.usersList}">
-					<p:column>
-						#{_user.nombre}
-					</p:column>
-				
-				</p:dataTable>
-			</div>
+			</div>			
 			</main>
 		</ui:define>
 	</ui:composition>

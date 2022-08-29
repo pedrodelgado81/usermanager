@@ -29,7 +29,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
 	protected void configure(HttpSecurity http) throws Exception {
 		http.authorizeRequests().antMatchers("/","/*.xhtml","/*.html","/error","/javax**/**", "/css/**", "/h2/**").permitAll() // Permito sin login las URL que cumplen
 																				// el patron anterior
-				.anyRequest().authenticated().and().formLogin().loginPage("/index.xhtml").permitAll().and() // Para el resto de peticiones pido login
+				.anyRequest().authenticated().and().formLogin().loginPage("/index.xhtml").defaultSuccessUrl("/private/home.xhtml").permitAll().and() // Para el resto de peticiones pido login
 				.logout().logoutUrl("/logout.xhtml").logoutSuccessUrl("/"); // Añado soporte a logout en la url /logout y que
 																		// redirija a /		
 		//Deshabilitamos el por defecto de Spring porque JSF ya tiene su propio mecanismo de proteccion
