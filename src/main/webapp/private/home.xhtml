@@ -35,8 +35,7 @@
 								<p:outputLabel value="Password" for="@next" styleClass="label-over"></p:outputLabel>
 								<p:password id="passwordField" match="passwordCheckField" styleClass="passwordField" 
 								style="width:70%;" feedback="true" size="20" value="#{userManagerBackbean.password}" validator="#{userManagerBackbean.passwordValidator}" required="true"
-								validatorMessage="El password no coincide o no cumple el patrón requerido"
-								></p:password>								
+								validatorMessage="El password no coincide o no cumple el patrón requerido"></p:password>								
 								<p:tooltip for="passwordField" position="top">
 									<div> La contraseña debe contener al menos:</div>
 									<ul>								
@@ -61,16 +60,24 @@
 						<div class="ui-g">
 							<div class="ui-g-3">
 								<p:outputLabel value="Nombre" for="@next" styleClass="label-over" ></p:outputLabel>
-								<p:inputText style="width:70%;" value="#{userManagerBackbean.name}" required="true"></p:inputText>							
+								<p:inputText id="nameInput" style="width:70%;" value="#{userManagerBackbean.name}" required="true">
+									<!-- Filtramos caracteres posibles en un nombre -->
+									<p:keyFilter regEx="/^[a-zA-Z\º\ª\ñ\Ñ\- ]+$/" for="nameInput"></p:keyFilter>
+								</p:inputText>							
 							</div>	
 							<div class="ui-g-3">
 								<p:outputLabel value="Apellidos" for="@next" styleClass="label-over" ></p:outputLabel>
-								<p:inputText style="width:90%;" value="#{userManagerBackbean.surname}" required="true"></p:inputText>							
+								<p:inputText id="surnameInput" style="width:90%;" value="#{userManagerBackbean.surname}" required="true">
+									<!-- Filtramos caracteres posibles en un apellido -->									
+									<p:keyFilter regEx="/^[a-zA-Z\º\ª\ñ\Ñ\- ]+$/" for="surnameInput"></p:keyFilter>
+								</p:inputText>							
 							</div>	
 							
 							<div class="ui-g-3">
 								<p:outputLabel value="Fecha nacimiento" for="@next" styleClass="label-over"></p:outputLabel>
-								<p:calendar mask="true" value="#{userManagerBackbean.birthDate}" showOn="button" required="true" pattern="dd/MM/yyyy"></p:calendar>			
+								<p:calendar id="birthInput" mask="true" value="#{userManagerBackbean.birthDate}" showOn="button" required="true" pattern="dd/MM/yyyy" 
+									validator="#{userManagerBackbean.ageValidator}" validatorMessage="La edad debe ser mayor de 14 años"></p:calendar>
+								<p:message id="dateMessage" for="birthInput" />				
 							</div>		
 							
 							<div class="ui-g-3">

@@ -23,12 +23,14 @@
 				<div class="ui-g-8 box" style="text-align: left;">
 						<img src="https://dru-id.com/wp-content/uploads/2018/09/Logo_RGB.svg" width="200px" alt="Identity &amp; Smart Activation as a Service" id="logo"/>
 						<div class="title"> User Manager</div>
-						<p:outputPanel rendered="#{p:ifGranted('ROLE_ADMIN')}">
-							<div style="margin-left:15px;color:red;"> (Admin)</div>
-						</p:outputPanel>
+						
 				</div>
 				<div class="ui-g-4">
-					<div class="div-usuario-logueado" style="display: inline;margin-right:15px;"><i class="fas fa-user"></i> #{userIdentity.authenticatedUser.username}</div>
+					<div class="div-usuario-logueado" style="display: inline;margin-right:15px;"><i class="fas fa-user"></i> #{userIdentity.authenticatedUser.username} 
+						<p:outputPanel rendered="#{p:ifGranted('ROLE_ADMIN')}" style="display: inline-block;">
+							<div style="color:red;"> (Admin)</div>
+						</p:outputPanel>
+					</div>
 					<h:form rendered="#{p:ifAnyGranted(['ROLE_USER','ROLE_ADMIN'])}"
 						style="float:right;">
 						
