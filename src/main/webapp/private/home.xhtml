@@ -13,11 +13,11 @@
 			<main>
 			<div class="ui-g" id="introDiv">
 				<div class="ui-g-12">
-					<p:outputPanel rendered="p:ifGranted('ROLE_ADMIN')}">
-						<h1>#{messages['home.titulo.admin']}</h1>
+					<p:outputPanel rendered="#{p:ifGranted('ROLE_ADMIN')}">
+						<h2>#{messages['home.titulo.admin']}</h2>
 					</p:outputPanel>
-					<p:outputPanel rendered="p:ifGranted('ROLE_USER')}">
-						<h1>#{messages['home.titulo.user']}</h1>
+					<p:outputPanel rendered="#{p:ifGranted('ROLE_USER')}">
+						<h2>#{messages['home.titulo.user']}</h2>
 					</p:outputPanel>
 				</div>
 			</div>			
