@@ -17,17 +17,58 @@
 				</div>
 			</div>
 			<div class="ui-g">
-				
+				<div class="ui-g-12">
+					<p:panel header="Añadir usuario" toggleable="true" >
+					
+					</p:panel>
+				</div>
 				
 			</div>
-			<div>
-			
-				<p:dataTable var="_user" value="#{userManagerBackbean.usersList}">
-					<p:column>
-						#{_user.nombre}
-					</p:column>
-				
-				</p:dataTable>
+			<div class="ui-g">
+				<div class="ui-g-12">			
+					<h:form>
+						<p:dataTable widgetVar="userTable" var="_user" value="#{userManagerBackbean.usersList}" paginator="true" rowsPerPageTemplate="15,25,50">
+							<p:column headerText="Email" sortBy="#{_user.email}">
+								#{_user.email}
+							</p:column>
+							<p:column headerText="Nombre" filterBy="#{_user.getNombreCompleto()}">
+								#{_user.getNombreCompleto()}
+							</p:column>
+							<p:column headerText="Fecha Nacimiento" sortBy="#{_user.fechaNacimiento}" filterBy="#{_user.fechaNacimiento}" filterFunction="#{userManagerBackbean.filterByDate}">
+							 
+							 <f:facet name="filter">
+							   	<h:inputHidden id="filter" />
+							  </f:facet>
+							 
+							  <f:facet name="header">
+							  	<div> Fecha Nacimiento </div>
+							  	<p:calendar id="from" pattern="dd/MM/yyyy">
+							      <p:ajax event="dateSelect" onstart="$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('filter', view).clientId}'))[0].value = $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value + '-' + $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value" oncomplete="PF('userTable').filter();" />
+							    </p:calendar>
+							    <span> - </span>
+							    <p:calendar id="to" pattern="dd/MM/yyyy">
+							      <p:ajax event="dateSelect" onstart="$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('filter', view).clientId}'))[0].value = $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value + '-' + $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value" oncomplete="PF('userTable').filter();" />
+							    </p:calendar>
+							  </f:facet>
+								#{_user.getFormatedDate(_user.fechaNacimiento)}
+							</p:column>
+							<p:column headerText="Fecha Alta" sortBy="#{_user.fechaAlta}">
+								#{_user.getFormatedDate(_user.fechaAlta)}
+							</p:column>
+							<p:column style="text-align:center;" width="5%">
+								<p:commandLink process="@this" update="@form">							
+									<i class="fas fa-trash-alt"></i>
+									 <p:confirm header="Confirmación" message="¿Desea eliminar al usuario #{_user.email} del sistema?" icon="pi pi-exclamation-triangle" />
+								</p:commandLink>
+							</p:column>					
+						</p:dataTable>
+						
+						 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+					        <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+					        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+					    </p:confirmDialog>  
+					</h:form>
+				</div>
 			</div>
 			</main>
 		</ui:define>

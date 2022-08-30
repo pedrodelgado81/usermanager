@@ -1,5 +1,6 @@
 package com.druid.usermanager.entities;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -141,6 +143,17 @@ public class User implements java.io.Serializable{
 
 	public void setFechaBaja(Date fechaBaja) {
 		this.fechaBaja = fechaBaja;
+	}
+	
+	@Transient
+	public String getNombreCompleto() { 
+		return this.nombre + " "+this.apellidos;
+	}
+	
+	@Transient
+	public String getFormatedDate(Date date) {
+		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+		return sdf.format(date);
 	}
 
 	@Override

@@ -7,9 +7,10 @@ h1, h2, h3 {
 	color: #616161;
 }
 
-main{
-	padding:20px;
+main {
+	padding: 20px;
 }
+
 .barra-header {
 	background-color: #deffe7;
 	border-bottom: 2px solid #d3d3e6;
@@ -22,12 +23,12 @@ main{
 	width: 33%;
 }
 
-.no-border .ui-panelgrid .ui-panelgrid-cell{
-	border:none;
+.no-border .ui-panelgrid .ui-panelgrid-cell {
+	border: none;
 }
 
 .no-border .ui-widget-content {
-	border:none;
+	border: none;
 }
 
 .panel-centrado {
@@ -41,15 +42,15 @@ main{
 	background-color: white;
 }
 
-.ui-button{
+.ui-button {
 	background: #2ea3f2;
-	border:none;	
-	color:white;
+	border: none;
+	color: white;
 	box-shadow: none;
 }
 
-.ui-button .ui-button-text{
-	padding: 10px ;
+.ui-button .ui-button-text {
+	padding: 10px;
 }
 
 .elemento-panel {
@@ -57,22 +58,22 @@ main{
 	margin-bottom: 8px;
 }
 
-.ui-inputfield{
+.ui-inputfield {
 	box-shadow: none;
 }
 
 .box {
-   display: flex;
-   align-items:center;
+	display: flex;
+	align-items: center;
 }
 
-.title{
+.title {
 	margin-left: 20px;
-    font-size: 1.7em;
-    color: #008fbc;
-    font-weight: bold;
-    border-bottom: 3px solid#008fbc;
-    font-style: italic;
+	font-size: 1.7em;
+	color: #008fbc;
+	font-weight: bold;
+	border-bottom: 3px solid #008fbc;
+	font-style: italic;
 }
 
 .logout-link {
@@ -88,6 +89,14 @@ main{
 	background-color: white;
 	color: #008fbc;
 	border: 1px solid #008fbc;
-
 }
 
+body .ui-paginator .ui-paginator-rpp-options {
+	margin-top: 8px;
+	border: 1px solid #c3c2c2;
+}
+
+.ui-paginator .ui-paginator-rpp-options {
+	margin-top: 8px;
+	border: 1px solid #c3c2c2;
+}
