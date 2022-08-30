@@ -100,3 +100,29 @@ body .ui-paginator .ui-paginator-rpp-options {
 	margin-top: 8px;
 	border: 1px solid #c3c2c2;
 }
+
+.label-over {
+	display: block;
+	font-weight: bold;
+}
+
+.error {
+	color: #ff6e6e;
+	padding-bottom: 6px;
+}
+
+.ui-outputlabel-rfi{
+	color:#ff6e6e;
+}
+
+body .ui-panel .ui-panel-titlebar{
+	    color: white;
+    background-color: #007ad9;
+}
+
+body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-minusthick{
+	color:white;
+}
+body .ui-panel .ui-panel-titlebar .ui-panel-titlebar-icon .ui-icon-plusthick{
+	color:white;
+}

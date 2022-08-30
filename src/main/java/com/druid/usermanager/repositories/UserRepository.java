@@ -9,8 +9,6 @@ import com.druid.usermanager.entities.User;
 
 public interface UserRepository extends JpaRepository<User, Integer> {
 
-	List<User> findByEmail(String email);
-
-	User findFirstByEmail(String email);
+	User findByEmail(String email);
 	
 }

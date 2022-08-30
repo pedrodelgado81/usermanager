@@ -15,33 +15,97 @@
 				<div class="ui-g-12">
 					<h1>#{messages['index.titulo']}</h1>
 				</div>
-			</div>
+			</div>			
 			<div class="ui-g">
 				<div class="ui-g-12">
-					<p:panel header="Añadir usuario" toggleable="true" >
-					
+					<p:panel header="Añadir usuario" toggleable="true" >					
+					<h:form id="userForm">
+						<div class="ui-g">
+							<div class="ui-g-3">
+								<p:outputLabel id="email" value="Email" for="@next" styleClass="label-over"></p:outputLabel>
+								<p:inputText id="emailInput" style="width:70%;" placeholder="user@domain.com" size="100" value="#{userManagerBackbean.email}" validatorMessage="Email mal formado" required="true">
+									<p:keyFilter for="emailInput" mask="email"></p:keyFilter>
+									<p:ajax event="blur" process="@this" update="@form"></p:ajax>
+									<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
+								</p:inputText>				
+								<p:message id="emailMessage" for="emailInput" />							
+											
+							</div>
+							<div class="ui-g-3 passwordDiv">
+								<p:outputLabel value="Password" for="@next" styleClass="label-over"></p:outputLabel>
+								<p:password id="passwordField" match="passwordCheckField" styleClass="passwordField" 
+								style="width:70%;" feedback="true" size="20" value="#{userManagerBackbean.password}" validator="#{userManagerBackbean.passwordValidator}" required="true"
+								validatorMessage="El password no coincide o no cumple el patrón requerido"
+								></p:password>								
+								<p:tooltip for="passwordField" position="top">
+									<div> La contraseña debe contener al menos:</div>
+									<ul>								
+										<li>Una mayúscula</li>
+										<li>Un carácter especial</li>
+										<li>Un número</li>
+									</ul>
+									<div>Y tener una logitud entre de 8 y 20 caracteres</div>
+								</p:tooltip>
+								<p:message id="passwordMessage" for="passwordField" />							
+							</div>
+							<div class="ui-g-3">
+								<p:outputLabel value="Repita password" for="@next" styleClass="label-over" ></p:outputLabel>
+								<p:password id="passwordCheckField" style="width:70%;" value="#{userManagerBackbean.password}" size="20" required="true">
+								</p:password>
+							</div>
+							<div class="ui-g-3" style="text-align:right;">
+								<p:commandButton value="Crear Usuario" action="#{userManagerBackbean.addUser()}" update="@form tableForm growlForm"></p:commandButton>					
+							</div>				
+																	
+						</div>
+						<div class="ui-g">
+							<div class="ui-g-3">
+								<p:outputLabel value="Nombre" for="@next" styleClass="label-over" ></p:outputLabel>
+								<p:inputText style="width:70%;" value="#{userManagerBackbean.name}" required="true"></p:inputText>							
+							</div>	
+							<div class="ui-g-3">
+								<p:outputLabel value="Apellidos" for="@next" styleClass="label-over" ></p:outputLabel>
+								<p:inputText style="width:90%;" value="#{userManagerBackbean.surname}" required="true"></p:inputText>							
+							</div>	
+							
+							<div class="ui-g-3">
+								<p:outputLabel value="Fecha nacimiento" for="@next" styleClass="label-over"></p:outputLabel>
+								<p:calendar mask="true" value="#{userManagerBackbean.birthDate}" showOn="button" required="true" pattern="dd/MM/yyyy"></p:calendar>			
+							</div>		
+							
+							<div class="ui-g-3">
+								<p:outputLabel value="Rol" for="@next" styleClass="label-over"></p:outputLabel>
+								<p:selectOneMenu value="#{userManagerBackbean.role}" required="true">
+									<f:selectItem itemLabel="Usuario" itemValue="ROLE_USER"/>
+									<f:selectItem itemLabel="Administrador" itemValue="ROLE_ADMIN"/>								
+								</p:selectOneMenu>							
+							</div>	
+													
+						</div>
+					</h:form>
 					</p:panel>
 				</div>
 				
 			</div>
 			<div class="ui-g">
 				<div class="ui-g-12">			
-					<h:form>
+					<h:form id="tableForm">
 						<p:dataTable widgetVar="userTable" var="_user" value="#{userManagerBackbean.usersList}" paginator="true" rowsPerPageTemplate="15,25,50">
-							<p:column headerText="Email" sortBy="#{_user.email}">
+							<p:column headerText="Email" sortBy="#{_user.email}" filterBy="#{_user.email}" filterStyle="width:70%;">
 								#{_user.email}
 							</p:column>
-							<p:column headerText="Nombre" filterBy="#{_user.getNombreCompleto()}">
+							<p:column headerText="Nombre" width="30%">
 								#{_user.getNombreCompleto()}
 							</p:column>
-							<p:column headerText="Fecha Nacimiento" sortBy="#{_user.fechaNacimiento}" filterBy="#{_user.fechaNacimiento}" filterFunction="#{userManagerBackbean.filterByDate}">
+							<p:column headerText="Fecha Nacimiento" style="text-align:center;" sortBy="#{_user.fechaNacimiento}" filterBy="#{_user.fechaNacimiento}" 
+							filterFunction="#{userManagerBackbean.filterByDate}"  width="25%">
 							 
 							 <f:facet name="filter">
 							   	<h:inputHidden id="filter" />
 							  </f:facet>
 							 
 							  <f:facet name="header">
-							  	<div> Fecha Nacimiento </div>
+							  	<div style="font-weight:bold;"> Fecha Nacimiento </div>
 							  	<p:calendar id="from" pattern="dd/MM/yyyy">
 							      <p:ajax event="dateSelect" onstart="$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('filter', view).clientId}'))[0].value = $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value + '-' + $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value" oncomplete="PF('userTable').filter();" />
 							    </p:calendar>
@@ -52,10 +116,10 @@
 							  </f:facet>
 								#{_user.getFormatedDate(_user.fechaNacimiento)}
 							</p:column>
-							<p:column headerText="Fecha Alta" sortBy="#{_user.fechaAlta}">
+							<p:column headerText="Fecha Alta" sortBy="#{_user.fechaAlta}" style="text-align:center;">
 								#{_user.getFormatedDate(_user.fechaAlta)}
 							</p:column>
-							<p:column style="text-align:center;" width="5%">
+							<p:column style="text-align:center;" width="5%" rendered="#{p:ifGranted('ROLE_ADMIN')}">
 								<p:commandLink process="@this" update="@form">							
 									<i class="fas fa-trash-alt"></i>
 									 <p:confirm header="Confirmación" message="¿Desea eliminar al usuario #{_user.email} del sistema?" icon="pi pi-exclamation-triangle" />

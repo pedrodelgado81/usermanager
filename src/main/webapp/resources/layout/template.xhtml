@@ -56,11 +56,13 @@
 					</h:form>
 				</div>
 			</div>
-		</p:outputPanel>
-
+		</p:outputPanel>		
+		<h:form id="growlForm">
+			<p:growl globalOnly="true" showDetail="true"></p:growl>
+		</h:form>
 	</div>
-	<p:outputPanel styleClass="contenido-web">
-		<ui:insert name="contenido"></ui:insert>
+	<p:outputPanel styleClass="contenido-web">		
+		<ui:insert name="contenido"></ui:insert>				
 	</p:outputPanel>
 </body>
 </html>

@@ -136,7 +136,7 @@ public class User implements java.io.Serializable{
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
-	@Column(name = "FECHA_BAJA", nullable = false, length = 26)
+	@Column(name = "FECHA_BAJA", nullable = true, length = 26)
 	public Date getFechaBaja() {
 		return fechaBaja;
 	}
