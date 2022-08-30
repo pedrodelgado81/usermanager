@@ -18,7 +18,7 @@ There are some loaded users with different roles
 * **Admin user**:  admin@dru-id.com // 12345
 * **Normal user**: usuario@dru-id.com // 12345
 
-To show database dables visit **http://localhost:8080/h2**
+To show database tables visit **http://localhost:8080/h2**
 * **Usermane**: dbuser
 * **Password**: password
 
