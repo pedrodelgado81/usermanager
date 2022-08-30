@@ -6,7 +6,7 @@ Clone this project
 
 `git clone https://github.com/pedrodelgado81/usermanager.git`
 
-Execute Spring-boot maven plugin
+Execute Spring-boot maven plugin or inside your IDE
 
 `mvn spring-boot:run`
 
