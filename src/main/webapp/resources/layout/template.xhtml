@@ -7,7 +7,7 @@
 	xmlns:p="http://primefaces.org/ui">
 
 <h:head>
-	<title>Dru-id User Manager</title>
+	<title>#{messages['app.name']}</title>
 	<f:facet name="first">
 		<script src="https://kit.fontawesome.com/8840e2056b.js"
 			crossorigin="anonymous"></script>
@@ -47,8 +47,8 @@
 								<f:selectItems value="#{userIdentity.locales}" />
 								
 								<p:column>
-									<p:outputPanel rendered="#{_locale == 'es'}"> <h:graphicImage name="img/espana.png" width="16"/> Español</p:outputPanel>
-									<p:outputPanel rendered="#{_locale == 'en'}"> <h:graphicImage name="img/eng.png"  width="16"/> Inglés</p:outputPanel>
+									<p:outputPanel rendered="#{_locale == 'es'}"> <h:graphicImage name="img/espana.png" width="16"/> #{messages['lang.esp']}</p:outputPanel>
+									<p:outputPanel rendered="#{_locale == 'en'}"> <h:graphicImage name="img/eng.png"  width="16"/> #{messages['lang.eng']}</p:outputPanel>
 								</p:column>
 								
 							<p:ajax event="change"

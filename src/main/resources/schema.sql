@@ -1,31 +1,30 @@
 CREATE SCHEMA IF NOT EXISTS USERMANAGER;
-DROP TABLE IF EXISTS USERMANAGER.usuario;
+DROP TABLE IF EXISTS USERMANAGER.users;
 
-DROP SEQUENCE IF EXISTS USERMANAGER.usuario_seq;
+DROP SEQUENCE IF EXISTS USERMANAGER.user_seq;
 
 -- Empezamos la secuencia en 5 porque insertamos 5 usuarios de prueba
-CREATE SEQUENCE USERMANAGER.usuario_seq INCREMENT BY 1 START WITH 5;
+CREATE SEQUENCE USERMANAGER.user_seq INCREMENT BY 1 START WITH 5;
 
 -- No borramos los usuarios de BBDD cuando se dan de baja ya que se tendrian que preservar (facturas, documentos, etc)
-CREATE TABLE USERMANAGER.usuario (
+CREATE TABLE USERMANAGER.users (
   ID INT PRIMARY KEY NOT NULL,
-  NOMBRE VARCHAR(100) NOT NULL,
-  APELLIDOS VARCHAR(100) NOT NULL,
+  NAME VARCHAR(100) NOT NULL,
+  SURNAME VARCHAR(100) NOT NULL,
   EMAIL VARCHAR(100) NOT NULL,
   PASSWORD VARCHAR(100) NOT NULL,
-  AVATAR VARCHAR(1000),
-  ROL Varchar(10) NOT NULL DEFAULT 'USR',
-  FECHA_NACIMIENTO DATE NOT NULL,
-  FECHA_ALTA TIMESTAMP NOT NULL DEFAULT now(),
-  FECHA_BAJA TIMESTAMP 
+  ROLE Varchar(10) NOT NULL DEFAULT 'USR',
+  BIRTH_DATE DATE NOT NULL,
+  CREATION_DATE TIMESTAMP NOT NULL DEFAULT now(),
+  DELETION_DATE TIMESTAMP 
 );
 
 -- Password 12345 para todos los usuarios
-INSERT into USERMANAGER.usuario(id,nombre,apellidos,email,password,avatar,rol,FECHA_NACIMIENTO) values(0,'admin','admin sistemas','admin@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','ROLE_ADMIN','1975-09-17');
-INSERT into USERMANAGER.usuario(id,nombre,apellidos,email,password,avatar,FECHA_NACIMIENTO) values(1,'usuario','usuario Prueba','usuario@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','1987-11-20');
-INSERT into USERMANAGER.usuario(id,nombre,apellidos,email,password,avatar,FECHA_NACIMIENTO) values(2,'Manuel','Castillo Perez','manuel@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','1992-06-07');
-INSERT into USERMANAGER.usuario(id,nombre,apellidos,email,password,avatar,FECHA_NACIMIENTO) values(3,'Carmen','Romero Martinez','carmen@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','2002-09-01');
-INSERT into USERMANAGER.usuario(id,nombre,apellidos,email,password,avatar,FECHA_NACIMIENTO) values(4,'Marta','Casas Boija','marta@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','avatar','1997-04-13');
+INSERT into USERMANAGER.users(id,NAME,SURNAME,email,password,ROLE,BIRTH_DATE) values(0,'admin','admin sistemas','admin@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','ROLE_ADMIN','1975-09-17');
+INSERT into USERMANAGER.users(id,NAME,SURNAME,email,password,BIRTH_DATE) values(1,'usuario','usuario Prueba','usuario@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','1987-11-20');
+INSERT into USERMANAGER.users(id,NAME,SURNAME,email,password,BIRTH_DATE) values(2,'Manuel','Castillo Perez','manuel@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','1992-06-07');
+INSERT into USERMANAGER.users(id,NAME,SURNAME,email,password,BIRTH_DATE) values(3,'Carmen','Romero Martinez','carmen@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','2002-09-01');
+INSERT into USERMANAGER.users(id,NAME,SURNAME,email,password,BIRTH_DATE) values(4,'Marta','Casas Boija','marta@dru-id.com','$2a$10$6QfTBtrR1QIKb1qn6LOW9Or/tzztgtuISmLjBC3ttrXse3QtCrHRC','1997-04-13');
 
 
 -- Tablas para la gestion de las sesiones 

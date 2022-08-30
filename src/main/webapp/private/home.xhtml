@@ -23,7 +23,7 @@
 						<div class="ui-g">
 							<div class="ui-g-3">
 								<p:outputLabel id="email" value="Email" for="@next" styleClass="label-over"></p:outputLabel>
-								<p:inputText id="emailInput" style="width:70%;" placeholder="user@domain.com" size="100" value="#{userManagerBackbean.email}" validatorMessage="Email mal formado" required="true">
+								<p:inputText id="emailInput" style="width:70%;" placeholder="user@domain.com" size="100" value="#{userManagerBackbean.email}" validatorMessage="#{messages['error.email']}" required="true">
 									<p:keyFilter for="emailInput" mask="email"></p:keyFilter>
 									<p:ajax event="blur" process="@this" update="@form"></p:ajax>
 									<f:validateRegex pattern="^[_A-Za-z0-9-\+]+(\.[_A-Za-z0-9-]+)*@[A-Za-z0-9-]+(\.[A-Za-z0-9]+)*(\.[A-Za-z]{2,})$" />
@@ -35,15 +35,15 @@
 								<p:outputLabel value="Password" for="@next" styleClass="label-over"></p:outputLabel>
 								<p:password id="passwordField" match="passwordCheckField" styleClass="passwordField" 
 								style="width:70%;" feedback="true" size="20" value="#{userManagerBackbean.password}" validator="#{userManagerBackbean.passwordValidator}" required="true"
-								validatorMessage="El password no coincide o no cumple el patrón requerido"></p:password>								
+								validatorMessage="#{messages['password.errror']}"></p:password>								
 								<p:tooltip for="passwordField" position="top">
-									<div> La contraseña debe contener al menos:</div>
+									<div> #{messages['password.req.intro']}:</div>
 									<ul>								
-										<li>Una mayúscula</li>
-										<li>Un carácter especial</li>
-										<li>Un número</li>
+										<li>#{messages['password.req.1']}</li>
+										<li>#{messages['password.req.2']}</li>
+										<li>#{messages['password.req.3']}</li>
 									</ul>
-									<div>Y tener una logitud entre de 8 y 20 caracteres</div>
+									<div>#{messages['password.req.fin']}</div>
 								</p:tooltip>
 								<p:message id="passwordMessage" for="passwordField" />							
 							</div>
@@ -53,20 +53,20 @@
 								</p:password>
 							</div>
 							<div class="ui-g-3" style="text-align:right;">
-								<p:commandButton value="Crear Usuario" action="#{userManagerBackbean.addUser()}" update="@form tableForm growlForm"></p:commandButton>					
+								<p:commandButton value="#{messages['user.create']}" action="#{userManagerBackbean.addUser()}" update="@form tableForm growlForm"></p:commandButton>					
 							</div>				
 																	
 						</div>
 						<div class="ui-g">
 							<div class="ui-g-3">
-								<p:outputLabel value="Nombre" for="@next" styleClass="label-over" ></p:outputLabel>
+								<p:outputLabel value="#{messages['label.nombre']}" for="@next" styleClass="label-over" ></p:outputLabel>
 								<p:inputText id="nameInput" style="width:70%;" value="#{userManagerBackbean.name}" required="true">
 									<!-- Filtramos caracteres posibles en un nombre -->
 									<p:keyFilter regEx="/^[a-zA-Z\º\ª\ñ\Ñ\- ]+$/" for="nameInput"></p:keyFilter>
 								</p:inputText>							
 							</div>	
 							<div class="ui-g-3">
-								<p:outputLabel value="Apellidos" for="@next" styleClass="label-over" ></p:outputLabel>
+								<p:outputLabel value="#{messages['label.apellidos']}" for="@next" styleClass="label-over" ></p:outputLabel>
 								<p:inputText id="surnameInput" style="width:90%;" value="#{userManagerBackbean.surname}" required="true">
 									<!-- Filtramos caracteres posibles en un apellido -->									
 									<p:keyFilter regEx="/^[a-zA-Z\º\ª\ñ\Ñ\- ]+$/" for="surnameInput"></p:keyFilter>
@@ -74,17 +74,17 @@
 							</div>	
 							
 							<div class="ui-g-3">
-								<p:outputLabel value="Fecha nacimiento" for="@next" styleClass="label-over"></p:outputLabel>
+								<p:outputLabel value="#{messages['label.nacimiento']}" for="@next" styleClass="label-over"></p:outputLabel>
 								<p:calendar id="birthInput" mask="true" value="#{userManagerBackbean.birthDate}" showOn="button" required="true" pattern="dd/MM/yyyy" 
 									validator="#{userManagerBackbean.ageValidator}" validatorMessage="La edad debe ser mayor de 14 años"></p:calendar>
 								<p:message id="dateMessage" for="birthInput" />				
 							</div>		
 							
 							<div class="ui-g-3">
-								<p:outputLabel value="Rol" for="@next" styleClass="label-over"></p:outputLabel>
+								<p:outputLabel value="#{messages['label.rol']}" for="@next" styleClass="label-over"></p:outputLabel>
 								<p:selectOneMenu value="#{userManagerBackbean.role}" required="true">
-									<f:selectItem itemLabel="Usuario" itemValue="ROLE_USER"/>
-									<f:selectItem itemLabel="Administrador" itemValue="ROLE_ADMIN"/>								
+									<f:selectItem itemLabel="#{messages['label.rol.usuario']}" itemValue="ROLE_USER"/>
+									<f:selectItem itemLabel="#{messages['label.rol.administrador']}" itemValue="ROLE_ADMIN"/>								
 								</p:selectOneMenu>							
 							</div>	
 													
@@ -95,50 +95,69 @@
 				
 			</div>
 			<div class="ui-g">
-				<div class="ui-g-12">			
-					<h:form id="tableForm">
-						<p:dataTable widgetVar="userTable" var="_user" value="#{userManagerBackbean.usersList}" paginator="true" rowsPerPageTemplate="15,25,50">
-							<p:column headerText="Email" sortBy="#{_user.email}" filterBy="#{_user.email}" filterStyle="width:70%;">
-								#{_user.email}
-							</p:column>
-							<p:column headerText="Nombre" width="30%">
-								#{_user.getNombreCompleto()}
-							</p:column>
-							<p:column headerText="Fecha Nacimiento" style="text-align:center;" sortBy="#{_user.fechaNacimiento}" filterBy="#{_user.fechaNacimiento}" 
-							filterFunction="#{userManagerBackbean.filterByDate}"  width="25%">
-							 
-							 <f:facet name="filter">
-							   	<h:inputHidden id="filter" />
-							  </f:facet>
-							 
-							  <f:facet name="header">
-							  	<div style="font-weight:bold;"> Fecha Nacimiento </div>
-							  	<p:calendar id="from" pattern="dd/MM/yyyy">
-							      <p:ajax event="dateSelect" onstart="$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('filter', view).clientId}'))[0].value = $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value + '-' + $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value" oncomplete="PF('userTable').filter();" />
-							    </p:calendar>
-							    <span> - </span>
-							    <p:calendar id="to" pattern="dd/MM/yyyy">
-							      <p:ajax event="dateSelect" onstart="$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('filter', view).clientId}'))[0].value = $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value + '-' + $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value" oncomplete="PF('userTable').filter();" />
-							    </p:calendar>
-							  </f:facet>
-								#{_user.getFormatedDate(_user.fechaNacimiento)}
-							</p:column>
-							<p:column headerText="Fecha Alta" sortBy="#{_user.fechaAlta}" style="text-align:center;">
-								#{_user.getFormatedDate(_user.fechaAlta)}
-							</p:column>
-							<p:column style="text-align:center;" width="5%" rendered="#{p:ifGranted('ROLE_ADMIN')}">
-								<p:commandLink process="@this" update="@form">							
-									<i class="fas fa-trash-alt"></i>
-									 <p:confirm header="Confirmación" message="¿Desea eliminar al usuario #{_user.email} del sistema?" icon="pi pi-exclamation-triangle" />
-								</p:commandLink>
-							</p:column>					
-						</p:dataTable>
-						
-						 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
-					        <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
-					        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
-					    </p:confirmDialog>  
-					</h:form>
+				<div class="ui-g-12">
+					<p:panel header="Listado de usuarios">			
+						<h:form id="tableForm">
+							<p:outputPanel rendered="#{p:ifGranted('ROLE_ADMIN')}" style="text-align:right; padding: 15px;">								
+								<p:selectBooleanCheckbox id="showDeleted" style="margin-right:15px;" value="#{userManagerBackbean.showDeleted}">
+									<p:ajax event="change" update="@form" listener="#{userManagerBackbean.reloadUsers()}" process="@this"></p:ajax>
+								</p:selectBooleanCheckbox>
+								<label for="showDeleted">#{messages['user.mostrar.eliminados']}</label>
+							</p:outputPanel>
+							
+							<p:dataTable widgetVar="userTable" var="_user" value="#{userManagerBackbean.usersList}" paginator="true" rowsPerPageTemplate="15,25,50">
+								<p:column headerText="#{messages['label.email']}" sortBy="#{_user.email}" filterBy="#{_user.email}" filterStyle="width:70%;">
+									#{_user.email}
+								</p:column>
+								<p:column headerText="#{messages['label.nombre']}" width="30%">
+									#{_user.getFullName()}
+								</p:column>
+								<p:column headerText="#{messages['label.nacimientol']}" style="text-align:center;" sortBy="#{_user.birthDate}" filterBy="#{_user.birthDate}" 
+								filterFunction="#{userManagerBackbean.filterByDate}"  width="25%">
+								 
+								 <f:facet name="filter">
+								   	<h:inputHidden id="filter" />
+								  </f:facet>
+								 
+								  <f:facet name="header">
+								  <!-- Creamos filtro custom integrado en la tabla y gestionamos los valores vía javascript para que quede la búsqueda y el filtrado integrados en la tabla -->
+								  	<div > 
+								  		<span style="font-weight:bold;">#{messages['label.nacimiento']}</span>
+								  		<p:commandLink process="@this" action="true" oncomplete="PF('userTable').filter();" onstart="$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('filter', view).clientId}'))[0].value =''; $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value='';$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value='';">
+								  			<i class="fas fa-brush" title="Limpiar filtro" style="margin-left:10px;"></i>
+								  		</p:commandLink> 
+								  	</div>
+								  	<p:calendar id="from" pattern="dd/MM/yyyy" value="#{userManagerBackbean.filterBeginDate}">
+								      <p:ajax event="dateSelect" onstart="$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('filter', view).clientId}'))[0].value = $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value + '-' + $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value" oncomplete="PF('userTable').filter();"/>
+								    </p:calendar>
+								    <span> - </span>
+								    <p:calendar id="to" pattern="dd/MM/yyyy" value="#{userManagerBackbean.filferEndDate}">
+								      <p:ajax event="dateSelect" onstart="$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('filter', view).clientId}'))[0].value = $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value + '-' + $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value" oncomplete="PF('userTable').filter();" />
+								    </p:calendar>
+								  </f:facet>
+									#{_user.getFormatedDate(_user.birthDate)}
+								</p:column>
+								<p:column headerText="#{messages['label.fecha.alta']}" sortBy="#{_user.creationDate}" style="text-align:center;">
+									#{_user.getFormatedDate(_user.creationDate)}
+								</p:column>
+								<p:column headerText="#{messages['label.fecha.baja']}" sortBy="#{_user.deletionDate}" style="text-align:center;" rendered="#{userManagerBackbean.showDeleted and p:ifGranted('ROLE_ADMIN')}">
+									#{_user.getFormatedDate(_user.deletionDate)}
+								</p:column>
+								<p:column style="text-align:center;" width="5%" rendered="#{p:ifGranted('ROLE_ADMIN')}">
+									<p:commandLink process="@this" update="@form" action="#{userManagerBackbean.removeUser(_user)}">							
+										<i class="fas fa-trash-alt"></i>
+										 <p:confirm header="Confirmación" message="#{messages['warn.delete.user.1']} #{_user.email} #{messages['warn.delete.user.2']} " icon="pi pi-exclamation-triangle" >										 	
+										 </p:confirm>
+									</p:commandLink>
+								</p:column>					
+							</p:dataTable>
+							
+							 <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+						        <p:commandButton value="Sí" type="button" styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+						        <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+						    </p:confirmDialog>  
+						</h:form>
+					</p:panel>
 				</div>
 			</div>
 			</main>

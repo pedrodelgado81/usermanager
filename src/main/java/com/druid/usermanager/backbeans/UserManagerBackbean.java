@@ -38,8 +38,8 @@ public class UserManagerBackbean implements Serializable {
 
 	private List<User> usersList;
 
-	private Date inicioFiltro;
-	private Date finFiltro;
+	private Date filterBeginDate;
+	private Date filferEndDate;
 
 	// ------ Creacion de usuario -------
 
@@ -50,9 +50,21 @@ public class UserManagerBackbean implements Serializable {
 	private Date birthDate;
 	private String role;
 
+	// ------ Fin creacion de usuario -------
+	
+	private boolean showDeleted;
+
 	@PostConstruct
 	private void init() {
 		usersList = this.userService.listUsers();
+	}
+	
+	public void reloadUsers() {
+		if(showDeleted) {
+			usersList = this.userService.listAllUsers();
+		}else {
+			usersList = this.userService.listUsers();	
+		}
 	}
 
 	public void addUser() {
@@ -72,13 +84,13 @@ public class UserManagerBackbean implements Serializable {
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} else {
 			User newUser = new User();
-			newUser.setNombre(this.name);
-			newUser.setApellidos(this.surname);
+			newUser.setName(this.name);
+			newUser.setSurname(this.surname);
 			newUser.setEmail(this.email);
 			newUser.setPassword(this.password);
-			newUser.setFechaNacimiento(this.birthDate);
+			newUser.setBirthDate(this.birthDate);
 			newUser.setRol(this.role);
-			newUser.setFechaAlta(new Date());
+			newUser.setCreationDate(new Date());
 			this.userService.persistUser(newUser);
 			FacesMessage msg = new FacesMessage("Usuario guardado", "Usuario añadido correctamente");
 			msg.setSeverity(FacesMessage.SEVERITY_INFO);
@@ -96,6 +108,19 @@ public class UserManagerBackbean implements Serializable {
 			// concurrencia)
 			usersList.add(newUser);
 		}
+	}
+	
+	public void clearDateFilter() {
+		this.filterBeginDate = null;
+		this.filferEndDate=null;
+	}
+	
+	public void removeUser(User user) {
+		this.userService.removeUser(user);
+		usersList.remove(user);
+		FacesMessage msg = new FacesMessage("Usuario eliminado", "Usuario eliminado correctamente");
+		msg.setSeverity(FacesMessage.SEVERITY_INFO);
+		FacesContext.getCurrentInstance().addMessage(null, msg);
 	}
 
 	/*
@@ -138,7 +163,7 @@ public class UserManagerBackbean implements Serializable {
 		// TODO: Lanzar excepcion cuando la fecha fin es anterior a la de inicio
 		try {
 			if (filter != null) {
-				String dates[] = ((String) filter).split("-");
+				String[] dates = ((String) filter).split("-");
 				Date end = null;
 				Date start = null;
 				// Si tiene fecha de inicio
@@ -179,21 +204,7 @@ public class UserManagerBackbean implements Serializable {
 		this.usersList = usersList;
 	}
 
-	public Date getInicioFiltro() {
-		return inicioFiltro;
-	}
 
-	public void setInicioFiltro(Date inicioFiltro) {
-		this.inicioFiltro = inicioFiltro;
-	}
-
-	public Date getFinFiltro() {
-		return finFiltro;
-	}
-
-	public void setFinFiltro(Date finFiltro) {
-		this.finFiltro = finFiltro;
-	}
 
 	public UserService getUserService() {
 		return userService;
@@ -249,6 +260,30 @@ public class UserManagerBackbean implements Serializable {
 
 	public void setRole(String role) {
 		this.role = role;
+	}
+
+	public boolean isShowDeleted() {
+		return showDeleted;
+	}
+
+	public void setShowDeleted(boolean showDeleted) {
+		this.showDeleted = showDeleted;
+	}
+
+	public Date getFilterBeginDate() {
+		return filterBeginDate;
+	}
+
+	public void setFilterBeginDate(Date filterBeginDate) {
+		this.filterBeginDate = filterBeginDate;
+	}
+
+	public Date getFilferEndDate() {
+		return filferEndDate;
+	}
+
+	public void setFilferEndDate(Date filferEndDate) {
+		this.filferEndDate = filferEndDate;
 	}
 
 }
