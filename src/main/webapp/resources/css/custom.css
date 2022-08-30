@@ -111,6 +111,10 @@ body .ui-paginator .ui-paginator-rpp-options {
 	padding-bottom: 6px;
 }
 
+.error-input .ui-inputfield{
+	border: 2px solid #ff6e6e;
+}
+
 .ui-outputlabel-rfi{
 	color:#ff6e6e;
 }

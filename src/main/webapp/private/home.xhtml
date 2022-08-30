@@ -35,7 +35,7 @@
 								<p:outputLabel value="Password" for="@next" styleClass="label-over"></p:outputLabel>
 								<p:password id="passwordField" match="passwordCheckField" styleClass="passwordField" 
 								style="width:70%;" feedback="true" size="20" value="#{userManagerBackbean.password}" validator="#{userManagerBackbean.passwordValidator}" required="true"
-								validatorMessage="#{messages['password.errror']}"></p:password>								
+								validatorMessage="#{messages['password.error']}"></p:password>								
 								<p:tooltip for="passwordField" position="top">
 									<div> #{messages['password.req.intro']}:</div>
 									<ul>								
@@ -127,12 +127,14 @@
 								  			<i class="fas fa-brush" title="Limpiar filtro" style="margin-left:10px;"></i>
 								  		</p:commandLink> 
 								  	</div>
-								  	<p:calendar id="from" pattern="dd/MM/yyyy" value="#{userManagerBackbean.filterBeginDate}">
-								      <p:ajax event="dateSelect" onstart="$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('filter', view).clientId}'))[0].value = $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value + '-' + $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value" oncomplete="PF('userTable').filter();"/>
+								  	<p:calendar styleClass="calendarRange" id="from" pattern="dd/MM/yyyy" value="#{userManagerBackbean.filterBeginDate}">
+								      <p:ajax event="dateSelect" 
+								      	onstart="$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('filter', view).clientId}'))[0].value = $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value + '-' + $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value;if(validDateRange($(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value,$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value)){showRangeError(false);}else{showRangeError(true);}" 
+								      	oncomplete="PF('userTable').filter();"/>
 								    </p:calendar>
 								    <span> - </span>
-								    <p:calendar id="to" pattern="dd/MM/yyyy" value="#{userManagerBackbean.filferEndDate}">
-								      <p:ajax event="dateSelect" onstart="$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('filter', view).clientId}'))[0].value = $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value + '-' + $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value" oncomplete="PF('userTable').filter();" />
+								    <p:calendar styleClass="calendarRange" id="to" pattern="dd/MM/yyyy" value="#{userManagerBackbean.filferEndDate}">
+								      <p:ajax event="dateSelect" onstart="$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('filter', view).clientId}'))[0].value = $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value + '-' + $(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value;if(validDateRange($(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('from', view).clientId}_input'))[0].value,$(PrimeFaces.escapeClientId('#{p:resolveFirstComponentWithId('to', view).clientId}_input'))[0].value)){showRangeError(false);}else{showRangeError(true);}" oncomplete="PF('userTable').filter();" />
 								    </p:calendar>
 								  </f:facet>
 									#{_user.getFormatedDate(_user.birthDate)}
@@ -144,7 +146,7 @@
 									#{_user.getFormatedDate(_user.deletionDate)}
 								</p:column>
 								<p:column style="text-align:center;" width="5%" rendered="#{p:ifGranted('ROLE_ADMIN')}">
-									<p:commandLink process="@this" update="@form" action="#{userManagerBackbean.removeUser(_user)}">							
+									<p:commandLink process="@this" update="@form growlForm" action="#{userManagerBackbean.removeUser(_user)}">							
 										<i class="fas fa-trash-alt"></i>
 										 <p:confirm header="Confirmación" message="#{messages['warn.delete.user.1']} #{_user.email} #{messages['warn.delete.user.2']} " icon="pi pi-exclamation-triangle" >										 	
 										 </p:confirm>
@@ -161,6 +163,24 @@
 				</div>
 			</div>
 			</main>
+			<script type="text/javascript">
+				function validDateRange(start,end){
+					var splitsDate = start.split("/");
+					var spliteDate = end.split("/");
+					var sDate = new Date(splitsDate[1]+"/"+splitsDate[0]+"/"+splitsDate[2]);
+					var eDate = new Date(spliteDate[1]+"/"+spliteDate[0]+"/"+spliteDate[2]);
+					return sDate.getTime() &lt; eDate.getTime();
+					}	
+
+				function showRangeError(show){					
+					if(show){
+						$('.calendarRange').addClass("error-input");
+					}	else{
+						$('.calendarRange').removeClass("error-input");
+					}				
+				}	
+					
+			</script>
 		</ui:define>
 	</ui:composition>
 </body>

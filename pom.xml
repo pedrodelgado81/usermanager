@@ -47,14 +47,28 @@
 			<version>8.0</version>
 		</dependency>
 		<!-- Fin primefaces -->
-		
+
 		<!-- Gestion de sesiones en base de datos -->
 		<dependency>
 			<groupId>org.springframework.session</groupId>
 			<artifactId>spring-session-jdbc</artifactId>
 		</dependency>
-		
+
 		<!-- Fin gestion de sesiones en bbdd -->
+		<!-- Log -->
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.7</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.7</version>
+			<type>test-jar</type>
+			<scope>test</scope>
+		</dependency>
+		<!-- Fin Log -->
 
 		<!-- Dependencias Spring Initializr -->
 		<dependency>

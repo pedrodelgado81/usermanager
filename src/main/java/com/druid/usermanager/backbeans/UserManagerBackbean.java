@@ -19,10 +19,13 @@ import javax.faces.validator.ValidatorException;
 import javax.faces.view.ViewScoped;
 import javax.inject.Named;
 
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.druid.usermanager.entities.User;
 import com.druid.usermanager.services.UserService;
+import com.druid.usermanager.session.UserIdentity;
 
 @Named(value = "userManagerBackbean")
 @ViewScoped
@@ -30,6 +33,12 @@ public class UserManagerBackbean implements Serializable {
 
 	@Autowired
 	private UserService userService;
+	
+	@Autowired
+	private UserIdentity userIdentity;
+	
+    private static final Logger log = LogManager.getLogger(UserManagerBackbean.class);
+
 
 	private static final String PASSWORD_REGEX = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#&()–[{}]:;',?/*~$^+=<>]).{8,20}$";
 	private static final String NAME_REGEX = "^[a-zA-Z\\º\\ª\\ñ\\Ñ\\- ]+$";
@@ -60,6 +69,7 @@ public class UserManagerBackbean implements Serializable {
 	}
 	
 	public void reloadUsers() {
+		log.debug("Recargando usuarios. Mostrar borrados #0",this.showDeleted);
 		if(showDeleted) {
 			usersList = this.userService.listAllUsers();
 		}else {
@@ -68,18 +78,19 @@ public class UserManagerBackbean implements Serializable {
 	}
 
 	public void addUser() {
-
+		log.info("Añadiendo usuario con email #0",this.email);
 		if (!isNameFormat(this.name) || !isNameFormat(this.surname)) {
-			FacesMessage msg = new FacesMessage("Formato Inválido",
-					"El nombre o apellidos contienen caracteres no válidos");
+			log.warn("Nombre o apellidos con formato incorrecto el usuario #0 no se guardará", this.email);
+			FacesMessage msg = new FacesMessage(userIdentity.getMessages().getString("validation.name"),userIdentity.getMessages().getString("validation.name.detail"));
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			return;
 		}
 
 		if (this.userService.findUserByEmail(this.email) != null) {
-			FacesMessage msg = new FacesMessage("Usuario existente",
-					"Ya existe un usuario en el sistema con ese email");
+			log.warn("Ya existe otro usuario con emai. #0. No se guarda el nuevo usuario", this.email);
+			FacesMessage msg = new FacesMessage(userIdentity.getMessages().getString("validation.user.exists"),
+					userIdentity.getMessages().getString("validation.user.exists.detail"));
 			msg.setSeverity(FacesMessage.SEVERITY_WARN);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 		} else {
@@ -92,7 +103,7 @@ public class UserManagerBackbean implements Serializable {
 			newUser.setRol(this.role);
 			newUser.setCreationDate(new Date());
 			this.userService.persistUser(newUser);
-			FacesMessage msg = new FacesMessage("Usuario guardado", "Usuario añadido correctamente");
+			FacesMessage msg = new FacesMessage(userIdentity.getMessages().getString("user.save"), userIdentity.getMessages().getString("user.save.detail"));
 			msg.setSeverity(FacesMessage.SEVERITY_INFO);
 			FacesContext.getCurrentInstance().addMessage(null, msg);
 			this.email = null;
@@ -107,6 +118,7 @@ public class UserManagerBackbean implements Serializable {
 			// la consulta (habria que ver cómo afecta al rendimiento si hay mucha
 			// concurrencia)
 			usersList.add(newUser);
+			log.info("Usuario #0 (#1) guardado correctamente",this.email,newUser.getFullName());
 		}
 	}
 	
@@ -115,12 +127,13 @@ public class UserManagerBackbean implements Serializable {
 		this.filferEndDate=null;
 	}
 	
-	public void removeUser(User user) {
+	public void removeUser(User user) {		
 		this.userService.removeUser(user);
 		usersList.remove(user);
-		FacesMessage msg = new FacesMessage("Usuario eliminado", "Usuario eliminado correctamente");
+		FacesMessage msg = new FacesMessage(userIdentity.getMessages().getString("user.delete"), userIdentity.getMessages().getString("user.delete.detail"));
 		msg.setSeverity(FacesMessage.SEVERITY_INFO);
 		FacesContext.getCurrentInstance().addMessage(null, msg);
+		log.info("Eliminado usuario #0 ",user.getEmail());
 	}
 
 	/*
@@ -128,8 +141,8 @@ public class UserManagerBackbean implements Serializable {
 	 */
 	public void ageValidator(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		if (Period.between(toLocalDate ((Date)value), toLocalDate(new Date())).getYears() <= 14) {
-			FacesMessage msg = new FacesMessage("Edad no válida",
-					"La edad mínima debe ser mayor de 14 años");
+			FacesMessage msg = new FacesMessage(userIdentity.getMessages().getString("validation.date"),
+					userIdentity.getMessages().getString("validation.date.detail"));
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			throw new ValidatorException(msg);
 		}
@@ -141,8 +154,8 @@ public class UserManagerBackbean implements Serializable {
 
 	public void passwordValidator(FacesContext context, UIComponent component, Object value) throws ValidatorException {
 		if (!isPasswordValid((String) value)) {
-			FacesMessage msg = new FacesMessage("Password no valido.",
-					"El password no coincide o no cumple el patrón requerido");
+			FacesMessage msg = new FacesMessage(userIdentity.getMessages().getString("validation.password"),
+					userIdentity.getMessages().getString("validation.password.detail"));
 			msg.setSeverity(FacesMessage.SEVERITY_ERROR);
 			throw new ValidatorException(msg);
 		}
@@ -160,7 +173,7 @@ public class UserManagerBackbean implements Serializable {
 
 	public boolean filterByDate(Object value, Object filter, Locale locale) {
 		SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy");
-		// TODO: Lanzar excepcion cuando la fecha fin es anterior a la de inicio
+		
 		try {
 			if (filter != null) {
 				String[] dates = ((String) filter).split("-");
@@ -176,6 +189,10 @@ public class UserManagerBackbean implements Serializable {
 				}
 
 				if (start != null && end != null) {
+					if(start.getTime()>end.getTime()) {
+						log.warn("Fecha de fin superior a fecha de inicio, el filtro no se aplicará");
+						return true;
+					}
 					return ((Date) value).getTime() >= start.getTime() && ((Date) value).getTime() <= end.getTime();
 				} else if (start != null) {
 					return ((Date) value).getTime() >= start.getTime();
@@ -187,8 +204,7 @@ public class UserManagerBackbean implements Serializable {
 
 			}
 		} catch (java.text.ParseException ex) {
-			// FIXME: Logear
-			ex.printStackTrace();
+			log.error("Error filtrando por fechas",ex);
 			// Si no puede parsear el rango de fechas no filtra
 			return true;
 		}
